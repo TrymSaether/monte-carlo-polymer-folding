@@ -43,6 +43,7 @@ class Polymer:
         self.coord = coord
         self.direction = direction
         self.rotate(coord, direction)
+        self.polymer_size = np.count_nonzero(self.polymer)
 
     def __len__(self):
         """
@@ -83,7 +84,7 @@ class Polymer:
             str: The string representation of the polymer.
         """
         return str(self.polymer)
-
+    
     def rotate(self, coord, direction):
         """
         Rotates the polymer around a given coordinate.
@@ -96,9 +97,8 @@ class Polymer:
         Returns:
             numpy.ndarray: The updated polymer polymer after rotation.
         """
-
         polymer = self.polymer
-        n = len(polymer)
+        n = self.n
 
         i, j = coord[0], coord[1]
 
@@ -134,6 +134,20 @@ class Polymer:
             polymer[new_i, new_j] = val
 
         self.polymer = polymer
+    
+    def intact(self):
+        """
+        Checks if the polymer is intact.
+
+        Returns:
+            bool: True if the polymer is intact, False otherwise.
+        """
+        polymer = self.polymer
+        n = self.n
+        intact = True
+
+        # check if polymer is intact
+    
     def plot(self):
         """
         Plot the image.
@@ -151,11 +165,13 @@ class Polymer:
         ax.set_ylim(0, self.n)
         ax.set_xticks(np.arange(0, self.n + 1, np.floor(self.n / 10)))
         ax.set_yticks(np.arange(0, self.n + 1, np.floor(self.n / 10)))
+        ax.set_xticklabels(np.arange(0, self.n + 1, np.floor(self.n / 10)))
+        ax.set_yticklabels(np.arange(0, self.n + 1, np.floor(self.n / 10)))
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_title("Polymer")
         if self.n < 50:
-            ax.grid(True)
+            ax.grid(True,linewidth=0.2)
         else:
             ax.grid(False)
 
@@ -181,7 +197,7 @@ def main():
     """
     Main function
     """
-    polymer = Polymer(10)
+    polymer = Polymer(20)
     polymer.rotate((5, 5), True)
     polymer.print()
     polymer.plot()
