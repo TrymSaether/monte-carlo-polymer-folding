@@ -27,7 +27,7 @@ class Polymer:
     - ax (matplotlib.axes.Axes): The axes object for plotting.
     """
 
-    def __init__(self, n):
+    def __init__(self, n, coord = (0,0), direction = True):
         """
         Initialize a Polymer object.
 
@@ -46,8 +46,10 @@ class Polymer:
         self.ax.set_xticks(np.arange(1, n + 1, 1))
         self.ax.set_yticks(np.arange(1, n + 1, 1))
         self.ax.grid(True)
-        self.plot_mesh()
-        self.plot_im()
+        self.coord = coord
+        self.direction = direction
+        self.rotate(coord, direction)
+
     def __len__(self):
         """
         Return length of polymer.
@@ -87,6 +89,57 @@ class Polymer:
             str: The string representation of the grid.
         """
         return str(self.grid)
+    
+    def rotate(self, coord, direction):
+        """
+        Rotates the polymer around a given coordinate.
+
+        Args:
+            coord (tuple): The coordinate around which the rotation will occur.
+            direction (bool): The direction of rotation. True for clockwise, False for counterclockwise.
+
+        Returns:
+            numpy.ndarray: The updated polymer grid after rotation.
+        """
+
+        polymer = self.grid
+        n = len(polymer)
+
+        i,j = coord[0], coord[1]
+        
+        # definerer om rotasjonen skal skje for verdiene over eller under mrot. 
+
+        lower_vals = False
+        
+        mrot = polymer[i, j]
+        if mrot <= int(n/2):                            # for mrot i midten vil den rotere monomerer med lavere nummer.
+            lower_vals = True
+
+        if lower_vals:                                  # lokaliserer monomerer som skal roteres
+            vectors = np.argwhere(np.logical_and(polymer > 0, polymer < mrot))           
+        else:
+            vectors = np.argwhere(polymer > mrot)
+
+        if direction:                                   # lager rotasjonsmatrise, bytter om på x- og y-akse for å passe iterering gjennom 2D-array
+            rot_matrix =  np.matrix('0, -1; 1, 0')
+        else:
+            rot_matrix = np.matrix('0, 1; -1, 0')
+
+
+        for vector in vectors:
+            i , j = vector[0], vector[1]
+
+            val = polymer[i,j]
+            polymer[i, j] = 0
+            rel_coord = (vector - coord)
+            rot_rel_coord = np.dot(rot_matrix, rel_coord)
+            new_coord = rot_rel_coord + coord
+            new_i, new_j = new_coord[0,0], new_coord[0,1]
+            polymer[new_i, new_j] = val
+
+
+        self.grid = polymer
+
 
     def plot_mesh(self):
         """
@@ -122,7 +175,7 @@ class Polymer:
             self.grid,
             cmap="viridis",
             interpolation="nearest",
-            origin="lower",
+            origin="upper",
             extent=[0, self.n, 0, self.n],
         )
 
@@ -131,16 +184,17 @@ class Polymer:
         Print the grid.
         """
         print(self.grid)
-
+    
 
 def main():
     """
     Main function
     """
-    polymer = Polymer(10)
+    polymer = Polymer(15)
+    polymer.rotate((7,7), True)
     polymer.plot_im()
     print(polymer)
     plt.show()
-    
+
 
 main()
