@@ -113,8 +113,11 @@ class Polymer:
         This method plots the image of the polymer grid using matplotlib.
         It uses the 'viridis' colormap for color mapping and 'nearest' interpolation for pixel display.
         The image is displayed with the origin at the lower left corner and the extent set to [0, self.n, 0, self.n].
-        """
+        Each monomer is labeled with its corresponding index.
 
+        Returns:
+        None
+        """
         self.ax.imshow(
             self.grid,
             cmap="viridis",
@@ -122,7 +125,6 @@ class Polymer:
             origin="lower",
             extent=[0, self.n, 0, self.n],
         )
-        plt.show()
 
     def print(self):
         """
@@ -136,11 +138,9 @@ def main():
     Main function
     """
     polymer = Polymer(10)
-    polymer.plot_mesh()
-
     polymer.plot_im()
     print(polymer)
-    polymer.print()
-
+    plt.show()
+    
 
 main()
