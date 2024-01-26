@@ -1,3 +1,13 @@
+"""
+This module contains the definition of the Polymer class, which represents a polymer object.
+It also includes functions for plotting the polymer grid and printing the grid.
+
+Classes:
+- Polymer: Represents a polymer object.
+
+Functions:
+- main: The main function of the module.
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -6,29 +16,24 @@ class Polymer:
     """
     Represents a polymer object.
 
+    Parameters:
+    - n (int): The size of the grid.
+
     Attributes:
-        n (int): The size of the polymer grid and the number of monomers.
-        grid (numpy.ndarray): The grid representing the polymer.
-        m (numpy.ndarray): The monomer values.
-        fig (matplotlib.figure.Figure): The figure object for plotting.
-        ax (matplotlib.axes.Axes): The axes object for plotting.
+    - n (int): The size of the grid.
+    - grid (numpy.ndarray): The grid representing the polymer.
+    - m (numpy.ndarray): An array of integers from 1 to n.
+    - fig (matplotlib.figure.Figure): The figure object for plotting.
+    - ax (matplotlib.axes.Axes): The axes object for plotting.
     """
 
     def __init__(self, n):
         """
-        Initializes the Polymer object.
+        Initialize a Polymer object.
 
-        Parameters:
-        - n (int): The size of the grid.
-
-        Attributes:
-        - n (int): The size of the grid.
-        - grid (numpy.ndarray): The grid representing the polymer.
-        - m (numpy.ndarray): An array of integers from 1 to n.
-        - fig (matplotlib.figure.Figure): The figure object for plotting.
-        - ax (matplotlib.axes.Axes): The axes object for plotting.
+        Args:
+            n (int): The size of the grid.
         """
-        
         self.n = n
         self.grid = np.zeros((n, n), dtype=int)
         self.m = np.arange(1, n + 1, dtype=int)
@@ -38,10 +43,11 @@ class Polymer:
         self.ax.set_aspect("equal")
         self.ax.set_xlim(1, n)
         self.ax.set_ylim(1, n)
-        self.ax.set_xticks(np.arange(1, n+1, 1))
-        self.ax.set_yticks(np.arange(1, n+1, 1))
+        self.ax.set_xticks(np.arange(1, n + 1, 1))
+        self.ax.set_yticks(np.arange(1, n + 1, 1))
         self.ax.grid(True)
-
+        self.plot_mesh()
+        self.plot_im()
     def __len__(self):
         """
         Return length of polymer.
@@ -82,7 +88,7 @@ class Polymer:
         """
         return str(self.grid)
 
-    def plotMesh(self):
+    def plot_mesh(self):
         """
         Plot the mesh using pcolormesh.
 
@@ -95,10 +101,12 @@ class Polymer:
         Returns:
         None
         """
-        self.ax.pcolormesh(self.grid, cmap="viridis", edgecolor="black", linewidth=2, alpha=0.5)
+        self.ax.pcolormesh(
+            self.grid, cmap="viridis", edgecolor="black", linewidth=2, alpha=0.5
+        )
         plt.show()
 
-    def plotIm(self):
+    def plot_im(self):
         """
         Plot the image.
 
@@ -107,7 +115,13 @@ class Polymer:
         The image is displayed with the origin at the lower left corner and the extent set to [0, self.n, 0, self.n].
         """
 
-        self.ax.imshow(self.grid, cmap="viridis", interpolation="nearest", origin="lower", extent=[0, self.n, 0, self.n])
+        self.ax.imshow(
+            self.grid,
+            cmap="viridis",
+            interpolation="nearest",
+            origin="lower",
+            extent=[0, self.n, 0, self.n],
+        )
         plt.show()
 
     def print(self):
@@ -122,9 +136,11 @@ def main():
     Main function
     """
     polymer = Polymer(10)
-    # polymer.plotMesh()
-    polymer.plotIm()
+    polymer.plot_mesh()
+
+    polymer.plot_im()
     print(polymer)
     polymer.print()
+
 
 main()
