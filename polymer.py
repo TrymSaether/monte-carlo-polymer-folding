@@ -1,6 +1,6 @@
 """
 This module contains the definition of the Polymer class, which represents a polymer object.
-It also includes functions for plotting the polymer grid and printing the grid.
+It also includes functions for plotting the polymer grid and printing the grid.'
 
 Classes:
 - Polymer: Represents a polymer object.
@@ -10,6 +10,8 @@ Functions:
 """
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.spatial.distance import cdist
+
 
 
 class Polymer:
@@ -43,7 +45,6 @@ class Polymer:
         self.coord = coord
         self.direction = direction
         self.rotate(coord, direction)
-        self.polymer_size = np.count_nonzero(self.polymer)
 
     def __len__(self):
         """
@@ -134,73 +135,17 @@ class Polymer:
             polymer[new_i, new_j] = val
 
         self.polymer = polymer
+
     
-    def intact(self):
-        """
-        Checks if the polymer is intact.
-
-        Returns:
-            bool: True if the polymer is intact, False otherwise.
-        """
-        polymer = self.polymer
-        n = self.n
-        intact = True
-
-        # check if polymer is intact
     
-    def plot(self):
-        """
-        Plot the image.
-
-        This method plots the image of the polymer grid using matplotlib.
-        It uses the 'viridis' colormap for color mapping and 'nearest' interpolation
-        for pixel display.
-        The image is displayed with the origin at the lower left corner and
-        the extent set to [0, self.n, 0, self.n].
-        """
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax.set_aspect("equal")
-        ax.set_xlim(0, self.n)
-        ax.set_ylim(0, self.n)
-        ax.set_xticks(np.arange(0, self.n + 1, np.floor(self.n / 10)))
-        ax.set_yticks(np.arange(0, self.n + 1, np.floor(self.n / 10)))
-        ax.set_xticklabels(np.arange(0, self.n + 1, np.floor(self.n / 10)))
-        ax.set_yticklabels(np.arange(0, self.n + 1, np.floor(self.n / 10)))
-        ax.set_xlabel("x")
-        ax.set_ylabel("y")
-        ax.set_title("Polymer")
-        if self.n < 50:
-            ax.grid(True,linewidth=0.2)
-        else:
-            ax.grid(False)
-
-        im = ax.pcolormesh(
-            self.polymer,
-            cmap="plasma",
-            edgecolors="grey",
-            linewidth=0.5,
-            antialiased=True,
-        )
-        cbar = fig.colorbar(im, ticks=np.arange(1, self.n + 1, np.floor(self.n / 10)), boundaries=np.arange(1, self.n + 1, 1))
-        cbar.set_label("monomer")
-        plt.show()
-
-    def print(self):
-        """
-        Print the polymer.
-        """
-        print(self.polymer)
-
 
 def main():
     """
     Main function
     """
     polymer = Polymer(20)
-    polymer.rotate((5, 5), True)
-    polymer.print()
-    polymer.plot()
+    polymer.rotate((10, 10), True)
+
     plt.show()
 
 
