@@ -7,7 +7,7 @@ def create_initial_polymer(N):
     return grid
 
 
-def surroundings(monomer):  # definerer verdier over, under, til venstre og høyre
+def surroundings(polymer, monomer):  # definerer verdier over, under, til venstre og høyre
     
     surroundings = np.zeros(4)
 
@@ -57,7 +57,7 @@ def is_intact(polymer, N):
     vectors = np.argwhere(polymer > 0)
     for i in range(1, N): 
         monomer = vectors[i]
-        surroundings_arr = surroundings(monomer)
+        surroundings_arr = surroundings(polymer, monomer)
         y, x = monomer[0], monomer[1]
         val = polymer[y,x]
         
@@ -73,4 +73,3 @@ def is_intact(polymer, N):
             intact = np.all(np.isin(elements, surroundings_arr))
     return intact
 
-p0 = np.arange(1, )
