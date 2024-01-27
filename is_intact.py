@@ -1,22 +1,81 @@
 import numpy as np
 
-def is_intact(polymer, N):
-    """
-    Check if the polymer is intact.
+def create_initial_polymer(N):
 
-    This method checks if the polymer is intact.
-    - It has N monomers
-    - Every monomer m has a unique int from 1 to N
-    - Every monomer m is neigbour with m - 1 and m + 1, except m = 1 and m = N
-    It returns True if the polymer is intact and False otherwise.
-    """
-    intact = True
+    grid = np.zeros((N,N), dtype=int, order='F')        # to-dimansjonalt grid uten polymer
+    grid[int(N/2)] = np.arange(1, N+1)                  # legger inn horisontalt polymer
+    return grid
+
+
+def surroundings(monomer):  # definerer verdier over, under, til venstre og høyre
+    
+    surroundings = np.zeros(4)
+
+    try: 
+        up = monomer+np.array([-1, 0])
+        y,x = up[0], up[1]
+        up_val = polymer[y,x]
+        surroundings[0] = up_val
+    except:
+        pass
+
+    try:
+        down = monomer + np.array([1, 0])
+        y,x = down[0], down[1]
+        down_val = polymer[y,x]
+        surroundings[1] = down_val
+    except IndexError:
+        pass
+
+    try:
+        left = monomer + np.array([0, -1])
+        y,x = left[0], left[1]
+        left_val = polymer[y,x]
+        surroundings[2] = left_val
+    except IndexError:
+        pass
+
+    try:
+        right = monomer + np.array([0, 1])
+        y,x = right[0], right[1]
+        right_val = polymer[y,x]
+        surroundings[3] = right_val
+    except IndexError:
+        pass
+  
+
+    return surroundings
+
+def is_intact(polymer, N):
+
     if len(polymer) != N:
         intact = False
     elif len(np.unique(polymer)) != N:
         intact = False
-    elif np.any(np.diff(polymer) != 1) and np.any(np.diff(polymer) != -1):
-        intact = False
+
+    intact = True
+    vectors = np.argwhere(polymer > 0)
+    for i in range(1, N): 
+        monomer = vectors[i]
+        surroundings_arr = surroundings(monomer)
+        y, x = monomer[0], monomer[1]
+        val = polymer[y,x]
+        
+        if val == 1:
+            elements = 2
+            intact = np.all(np.isin(elements, surroundings_arr))
+            print(intact)
+        elif val == N:
+            elements = N-1
+            intact = np.all(np.isin(elements, surroundings_arr))
+        else:
+            elements = np.array([val-1, val+1])
+            intact = np.all(np.isin(elements, surroundings_arr))
     return intact
 
-p0 = np.arange(1, )
+N = 20
+polymer = create_initial_polymer(N)
+
+
+val = polymer
+is_intact(polymer, N)
