@@ -65,6 +65,7 @@ def intactPolymer(polymer, N):
             
         
     except IndexError:
+        
         return False
     
 
