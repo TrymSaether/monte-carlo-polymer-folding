@@ -73,9 +73,4 @@ def is_intact(polymer, N):
             intact = np.all(np.isin(elements, surroundings_arr))
     return intact
 
-N = 20
-polymer = create_initial_polymer(N)
-
-
-val = polymer
-is_intact(polymer, N)
+p0 = np.arange(1, )

@@ -1,8 +1,7 @@
 import random
 import numpy as np
 from matplotlib import pyplot as plt
-from is_intact import is_intact, surroundings
-
+from is_intact import is_intact
 
 def rotate(polymer, coord, direction):
 
@@ -41,20 +40,9 @@ def rotate(polymer, coord, direction):
         new_i, new_j = new_coord[0,0], new_coord[0,1]
         polymer[new_i, new_j] = val
         
-
     return polymer
 
 
-def rotate_test(N, Ns):
-    i = 1
-    polymer = np.arange(1, N+1)
-    for i in range(1, Ns):
-        monomer = polymer[random.randint(1, N)]
-        rot = random.randint(0, 1)
-        rot_polymer = rotate(polymer,monomer,bool(rot))
-        if is_intact(rot_polymer, N):
-            i += 1
-            polymer = rot_polymer
-    return polymer, i
+
 
 rotate_test(20, 3)
