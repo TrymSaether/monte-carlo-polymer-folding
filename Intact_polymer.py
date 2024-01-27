@@ -4,7 +4,12 @@ import matplotlib.pyplot as plt
 import time
 
 
+                                                
+def create_initial_polymer(N):
 
+    grid = np.zeros((N,N), dtype=int, order='F')        # to-dimansjonalt grid uten polymer
+    grid[int(N/2)] = np.arange(1, N+1)                  # legger inn horisontalt polymer
+    return grid
 
 def intactPolymer(polymer, N):
     counter = 0
@@ -63,4 +68,4 @@ def intactPolymer(polymer, N):
         return False
     
 
-    
+    intactPolymer(create_initial_polymer(1000), 1000)
