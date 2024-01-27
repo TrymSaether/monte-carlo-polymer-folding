@@ -41,8 +41,3 @@ def rotate(polymer, coord, direction):
         polymer[new_i, new_j] = val
         
     return polymer
-
-
-
-
-rotate_test(20, 3)
