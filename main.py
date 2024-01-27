@@ -3,8 +3,7 @@ import numpy as np
 from rotate import rotate
 from is_intact import is_intact
 from grafikk import plot
-
-N = 15                                                  # antall monomerer
+                                          # antall monomerer
 def create_initial_polymer(N):
 
     grid = np.zeros((N,N), dtype=int, order='F')        # to-dimansjonalt grid uten polymer
