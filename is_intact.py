@@ -55,11 +55,13 @@ def is_intact(polymer, N):
 
     intact = True
     vectors = np.argwhere(polymer > 0)
-    for i in range(1, N): 
+
+    for i in range(0, N):
         monomer = vectors[i]
         surroundings_arr = surroundings(polymer, monomer)
         y, x = monomer[0], monomer[1]
         val = polymer[y,x]
+        print(val)
         
         if val == 1:
             elements = 2
