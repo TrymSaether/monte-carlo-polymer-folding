@@ -1,71 +1,100 @@
 import numpy as np
 
-def is_intact(polymer, N):
-    """
-    Check if the polymer is intact.
+def create_initial_polymer(N):
 
-    This method checks if the polymer is intact.
-    - It has N monomers
-    - Every monomer m has a unique int from 1 to N
-    - Every monomer m is neigbour with m - 1 and m + 1, except m = 1 and m = N
-    It returns True if the polymer is intact and False otherwise.
-    """
-    intact = True
-    if len(polymer) != N:
-        intact = False
-    elif len(np.unique(polymer)) != N:
-        intact = False
-    elif np.any(np.diff(polymer) != 1) and np.any(np.diff(polymer) != -1):
-        intact = False
-    return intact
+    grid = np.zeros((N,N), dtype=int, order='F')        # to-dimansjonalt grid uten polymer
+    grid[int(N/2)] = np.arange(1, N+1)                  # legger inn horisontalt polymer
+    return grid
 
-def intactPolymer(polymer, N):
-    counter = 0
-    pol_arr = []
-    length = False
-    val = False
-    pol_len = len(polymer)
-    neighbour_1 = False
-    neighbour_2 = False
-    neighbour_3 = False
+# ikke så nice, men skrevet av meg:
+
+def surroundings(polymer, monomer):  # definerer verdier over, under, til venstre og høyre
+    
+    surroundings = np.zeros(4)
+
+    try: 
+        up = monomer+np.array([-1, 0])
+        y,x = up[0], up[1]
+        up_val = polymer[y,x]
+        surroundings[0] = up_val
+    except:
+        pass
+
     try:
-        for i in range(pol_len):
-            for j in range(pol_len):
-                if polymer[i,j] != 0:
-                    counter += 1
-                    
-                    pol_arr.append(polymer[i,j])
-
-                    if polymer[i,j] == 1:
-                        if (polymer[i - 1,j] == 2 or polymer[i + 1,j] == 2 or 
-                        polymer[i,j - 1] == 2 or polymer[i,j + 1] == 2):
-                            neighbour_1 = True
-
-                    elif polymer[i,j] == N:
-                            if (polymer[i - 1,j] == N-1 or polymer[i + 1,j] == N-1 or 
-                            polymer[i,j - 1] == N-1 or polymer[i,j + 1] == N-1):
-                                neighbour_2 = True
-                    
-                    else:
-                        if (polymer[i,j] == 1 + polymer[i - 1,j] or polymer[i,j] == 1 + polymer[i + 1,j] or 
-                        polymer[i,j] == 1 + polymer[i,j - 1] or polymer[i,j] == 1 + polymer[i,j + 1]) and (polymer[i,j] == -1 + polymer[i - 1,j] or polymer[i,j] == -1 + polymer[i + 1,j] or 
-                        polymer[i,j] == -1 + polymer[i,j - 1] or polymer[i,j] == -1 + polymer[i,j + 1]):
-                            neighbour_3 = True
-                
-        if counter == N:
-                length = True
-
-        
-        delete_arr = set(pol_arr)
-        if len(delete_arr) == len(pol_arr):
-            val = True
-                
-
-        if (length and val and neighbour_1 and neighbour_2 and neighbour_3):
-            return True
-        else:
-            return False 
-        
+        down = monomer + np.array([1, 0])
+        y,x = down[0], down[1]
+        down_val = polymer[y,x]
+        surroundings[1] = down_val
     except IndexError:
-        return False
+        pass
+
+    try:
+        left = monomer + np.array([0, -1])
+        y,x = left[0], left[1]
+        left_val = polymer[y,x]
+        surroundings[2] = left_val
+    except IndexError:
+        pass
+
+    try:
+        right = monomer + np.array([0, 1])
+        y,x = right[0], right[1]
+        right_val = polymer[y,x]
+        surroundings[3] = right_val
+    except IndexError:
+        pass
+  
+
+    return surroundings
+
+# sykt nice men skrevet av ChatGPT:
+"""
+def surroundings(polymer, monomer):
+    y, x = monomer
+    max_y, max_x = polymer.shape
+    surrounding_values = []
+
+    if y > 0:
+        surrounding_values.append(polymer[y-1, x])  # Up
+    if y < max_y - 1:
+        surrounding_values.append(polymer[y+1, x])  # Down
+    if x > 0:
+        surrounding_values.append(polymer[y, x-1])  # Left
+    if x < max_x - 1:
+        surrounding_values.append(polymer[y, x+1])  # Right
+
+    return surrounding_values
+"""
+
+def is_intact(polymer, N):
+
+    vectors = np.argwhere(polymer > 0)
+    
+    for monomer in vectors:
+        surroundings_arr = surroundings(polymer, monomer)
+        y, x = monomer[0], monomer[1]
+        val = polymer[y,x]
+        vals = []
+        vals.append(val)
         
+        if len(set(vals)) != len(vals): #checking repeating vaalues
+            print("repeating values")
+            return False
+        
+        if val == 1:
+            elements = [2]
+        elif val == N:
+            elements = [N-1]
+        else:
+            elements = [val-1, val+1]
+
+        if not all(elem in surroundings_arr for elem in elements): # sjekker naboer
+            print("neighbors")
+            return False
+        
+    if len(vectors) != N: # sjekker antall tall
+        print("not enough numbers")
+        return False
+    
+        
+    return True
