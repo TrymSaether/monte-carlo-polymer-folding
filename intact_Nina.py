@@ -48,8 +48,8 @@ def surroundings(polymer, monomer):  # definerer verdier over, under, til venstr
     return surroundings
 
 # sykt nice men skrevet av ChatGPT:
-"""
-def surroundings(polymer, monomer):
+
+def surroundings_chatgpt(polymer, monomer):
     y, x = monomer
     max_y, max_x = polymer.shape
     surrounding_values = []
@@ -64,7 +64,7 @@ def surroundings(polymer, monomer):
         surrounding_values.append(polymer[y, x+1])  # Right
 
     return surrounding_values
-"""
+
 
 def is_intact(polymer, N):
 
@@ -78,7 +78,6 @@ def is_intact(polymer, N):
         vals.append(val)
         
         if len(set(vals)) != len(vals): #checking repeating vaalues
-            print("repeating values")
             return False
         
         if val == 1:
@@ -89,11 +88,9 @@ def is_intact(polymer, N):
             elements = [val-1, val+1]
 
         if not all(elem in surroundings_arr for elem in elements): # sjekker naboer
-            print("neighbors")
             return False
         
     if len(vectors) != N: # sjekker antall tall
-        print("not enough numbers")
         return False
     
         
