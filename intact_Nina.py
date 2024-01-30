@@ -71,7 +71,7 @@ def is_intact(polymer, N):
     vectors = np.argwhere(polymer > 0)
     
     for monomer in vectors:
-        surroundings_arr = surroundings(polymer, monomer)
+        surroundings_arr = surroundings_chatgpt(polymer, monomer)
         y, x = monomer[0], monomer[1]
         val = polymer[y,x]
         vals = []
