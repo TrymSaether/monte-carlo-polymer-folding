@@ -73,7 +73,7 @@ def intactPolymer(polymer, N):
 def rotate_test(N, Ns):
     c = 1
     temp_polymer = create_initial_polymer(N)
-    for i in range(1, Ns):
+    while c < Ns:
         monomer = np.argwhere(temp_polymer > 0)
         coord = monomer[np.random.randint(0, N)]
         rot = random.randint(0, 1)
