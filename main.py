@@ -3,6 +3,7 @@ import time
 import numpy as np
 from rotate import rotate
 from intact_Nina import is_intact
+from intact_Alisa import intactPolymer
 from grafikk import plot
                                           # antall monomerer
 def create_initial_polymer(N):
