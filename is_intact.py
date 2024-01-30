@@ -72,4 +72,3 @@ def is_intact(polymer, N):
             elements = np.array([val-1, val+1])
             intact = np.all(np.isin(elements, surroundings_arr))
     return intact
-
