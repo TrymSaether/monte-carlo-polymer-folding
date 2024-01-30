@@ -80,16 +80,14 @@ def rotate_test(N, Ns):
         old_polymer, rot_polymer = rotate(temp_polymer,coord,rot)
         
         if is_intact(rot_polymer, N):
-            print("rotating")
             c += 1
             temp_polymer = rot_polymer
         else:
-            print("keeping old")
             temp_polymer = old_polymer
-    plot(temp_polymer, N)
     return temp_polymer, c
 
-polymer, c = rotate_test(100, 21)
-#plot(polymer, 100)
-print(c)
+
+N, Ns = 1000, 50
+polymer, c = rotate_test(N, Ns)
+plot(polymer, N)
 
