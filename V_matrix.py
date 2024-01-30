@@ -20,6 +20,8 @@ def v_Matrix(N):
 
 vMatrix = v_Matrix(10)
 
+print(vMatrix(10))
+
 
 def polEnergy(polymer, vMatrix):
 
@@ -50,18 +52,19 @@ def polEnergy(polymer, vMatrix):
         else:
             b = 1
 
-        for j in range(len(polymer)):
-            E[:,j] = 1/2 * vMatrix[:,j] * b
+        for i in range(N):    
+            for j in range(N):
+                E[i,j] = 1/2 * vMatrix[i,j] * b
     
     return E
 
 
-poly0 = create_initial_polymer(10)
-pol, poly0 = rotate(poly0, (5,5), 1)
-pol, poly0 = rotate(poly0, (4,5), 1)
-print(poly0)
+#poly0 = create_initial_polymer(10)
+#pol, poly0 = rotate(poly0, (5,5), 1)
+#pol, poly0 = rotate(poly0, (4,5), 1)
+#print(poly0)
 
 
-E = polEnergy(poly0, vMatrix)
+#E = polEnergy(poly0, vMatrix)
  
-print(E)
+#print(E)
