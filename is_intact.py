@@ -6,6 +6,7 @@ def create_initial_polymer(N):
     grid[int(N/2)] = np.arange(1, N+1)                  # legger inn horisontalt polymer
     return grid
 
+# ikke så nice, men skrevet av meg:
 
 def surroundings(polymer, monomer):  # definerer verdier over, under, til venstre og høyre
     
@@ -46,29 +47,54 @@ def surroundings(polymer, monomer):  # definerer verdier over, under, til venstr
 
     return surroundings
 
+# sykt nice men skrevet av ChatGPT:
+"""
+def surroundings(polymer, monomer):
+    y, x = monomer
+    max_y, max_x = polymer.shape
+    surrounding_values = []
+
+    if y > 0:
+        surrounding_values.append(polymer[y-1, x])  # Up
+    if y < max_y - 1:
+        surrounding_values.append(polymer[y+1, x])  # Down
+    if x > 0:
+        surrounding_values.append(polymer[y, x-1])  # Left
+    if x < max_x - 1:
+        surrounding_values.append(polymer[y, x+1])  # Right
+
+    return surrounding_values
+"""
+
 def is_intact(polymer, N):
 
-    if len(polymer) != N:
-        intact = False
-    elif len(np.unique(polymer)) != N:
-        intact = False
-
-    intact = True
     vectors = np.argwhere(polymer > 0)
-    for i in range(1, N): 
-        monomer = vectors[i]
+    
+    for monomer in vectors:
         surroundings_arr = surroundings(polymer, monomer)
         y, x = monomer[0], monomer[1]
         val = polymer[y,x]
+        vals = []
+        vals.append(val)
+        
+        if len(set(vals)) != len(vals): #checking repeating vaalues
+            print("repeating values")
+            return False
         
         if val == 1:
-            elements = 2
-            intact = np.all(np.isin(elements, surroundings_arr))
-            print(intact)
+            elements = [2]
         elif val == N:
-            elements = N-1
-            intact = np.all(np.isin(elements, surroundings_arr))
+            elements = [N-1]
         else:
-            elements = np.array([val-1, val+1])
-            intact = np.all(np.isin(elements, surroundings_arr))
-    return intact
+            elements = [val-1, val+1]
+
+        if not all(elem in surroundings_arr for elem in elements): # sjekker naboer
+            print("neighbors")
+            return False
+        
+    if len(vectors) != N: # sjekker antall tall
+        print("not enough numbers")
+        return False
+    
+        
+    return True

@@ -74,16 +74,22 @@ def rotate_test(N, Ns):
     c = 1
     temp_polymer = create_initial_polymer(N)
     for i in range(1, Ns):
-        coord = np.argwhere(temp_polymer > 0)[np.random.randint(1, N)]
+        monomer = np.argwhere(temp_polymer > 0)
+        coord = monomer[np.random.randint(0, N)]
         rot = random.randint(0, 1)
-        rot_polymer = rotate(temp_polymer,coord,rot)
-        if intactPolymer(rot_polymer, N):
+        old_polymer, rot_polymer = rotate(temp_polymer,coord,rot)
+        
+        if is_intact(rot_polymer, N):
+            print("rotating")
             c += 1
             temp_polymer = rot_polymer
+        else:
+            print("keeping old")
+            temp_polymer = old_polymer
     plot(temp_polymer, N)
     return temp_polymer, c
 
-polymer, i = rotate_test(100, 10)
-plot(polymer, 100)
-print(i)
+polymer, c = rotate_test(100, 21)
+#plot(polymer, 100)
+print(c)
 
