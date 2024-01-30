@@ -11,6 +11,8 @@ def plot(polymer, N):
         The image is displayed with the origin at the lower left corner and
         the extent set to [0, N, 0, N].
         """
+        polymer_clean =polymer[~np.all(polymer == 0, axis=1)] # Fjerner rader med 0
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.set_aspect("equal")
@@ -27,9 +29,8 @@ def plot(polymer, N):
             ax.grid(True,linewidth=0.2)
         else:
             ax.grid(False)
-
         im = ax.pcolormesh(
-            polymer,
+            polymer_clean,
             cmap="plasma",
             edgecolors="grey",
             linewidth=0.5,
