@@ -1,5 +1,6 @@
+import numpy as np
 
-def vMatrix(N):
+def v_Matrix(N):
     grid = np.zeros((N,N), dtype=int, order='F')
     for i in range(N):
         for j in range(N):
@@ -14,4 +15,6 @@ def vMatrix(N):
 
     return grid
 
-vMatrix(10)
+v_Matrix(10)
+
+
