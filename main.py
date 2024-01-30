@@ -79,12 +79,10 @@ def rotate_test(N, Ns):
         rot = random.randint(0, 1)
         old_polymer, rot_polymer = rotate(temp_polymer,coord,rot)
         
-        if is_intact(rot_polymer, N):
-            print("rotating")
+        if intactPolymer(rot_polymer, N):
             c += 1
             temp_polymer = rot_polymer
         else:
-            print("keeping old")
             temp_polymer = old_polymer
     plot(temp_polymer, N)
     return temp_polymer, c
