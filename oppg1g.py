@@ -1,8 +1,5 @@
 from main import rotate_test
 import numpy as np
-from tempfile import TemporaryFile
-
-
 
 polymer_15_4, c, t = rotate_test(15, 4) 
 polymer_15_1000, c, t = rotate_test(15, 1000)
