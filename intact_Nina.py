@@ -46,9 +46,9 @@ def surroundings(polymer, monomer):  # definerer verdier over, under, til venstr
   
 
     return surroundings
-
-# sykt nice men skrevet av ChatGPT:
 """
+# sykt nice men skrevet av ChatGPT:
+
 def surroundings(polymer, monomer):
     y, x = monomer
     max_y, max_x = polymer.shape
@@ -64,8 +64,8 @@ def surroundings(polymer, monomer):
         surrounding_values.append(polymer[y, x+1])  # Right
 
     return surrounding_values
-"""
 
+"""
 def is_intact(polymer, N):
 
     vectors = np.argwhere(polymer > 0)

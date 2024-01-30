@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from matplotlib import pyplot as plt
-from is_intact import is_intact
+from intact_Nina import is_intact
 
 def rotate(polymer, coord, direction):
 
