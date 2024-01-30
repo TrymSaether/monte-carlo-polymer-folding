@@ -35,6 +35,6 @@ def rotate_test(N, Ns):
     plot(temp_polymer, N)
     return temp_polymer, c, total_time
 
-polymer, c, time = rotate_test(1000, 33)
-print(time)
+polymer, c, t = rotate_test(1000, 33)
+print(t)
 
