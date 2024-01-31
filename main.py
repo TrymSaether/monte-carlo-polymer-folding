@@ -33,10 +33,12 @@ def rotate_test(N, Ns):
     slutt = time.time()
     total_time = slutt-start
     return temp_polymer, c, total_time
-"""
-polymer, c, t = rotate_test(1000, 33)
-N, Ns = 1000, 50
-polymer, c, t = rotate_test(N, Ns)
-plot(polymer, N)
 
-"""
+# polymer, c, t = rotate_test(1000, 33)
+# N, Ns = 500, 100
+# polymer, c, t = rotate_test(N, Ns)
+# polymer0 = create_initial_polymer(20)
+# plot(polymer0, N)
+# plot(polymer, N)
+
+
