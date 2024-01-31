@@ -2,5 +2,13 @@
 Ser tydelig forskjell mellom de to grafene. En fellesnevner er at begge polymerer vil strebe etter å minimere egen energi, som kommer tydeligst
 frem i polymeren med lav energi.
 Fysisk sett er sannsynligheten for tilfeldige, ugunstige rotasjoner større ved høyere temperatur.
-I koden simuleres dette ved høy temperatur vil beta = 1/(k_b*T) blir liten, som igjen fører til at exp(-beta*delta_E) blir stor/nærmere 1, relativt til ved lav temperatur.
+I koden simuleres dette stokastisk. Ved høy temperatur vil beta = 1/(k_b*T) bli liten, som igjen fører til at exp(-beta*delta_E) blir stor/nærmere 1, relativt til ved lav temperatur.
 Når eksponensialleddet er nærmere 1 vil den tilfeldige p-en vår mest sannsynlig være mindre, og en rotering mot høyere energinivå vil forekomme. 
+
+Grafen for polymeren i høy temperatur viser den høyfrekvente fluktueringen, men også polymerens tendens til å rotere mot lavere energi.
+Grafen har plutselige hopp, som raskt synker ved at polymeren roteres mot lavere energitilstand.
+Polymeren ved lavere energi kan også oppleve ugunstige rotasjoner, men dette oppstår kun et fåtall av ganger. Garfen viser at energien
+stabiliserer seg ved en viss verdi, et minimum. Dette skjer når det ikke finnes flere monomerer den kan rotere rundt som minimerer energien.
+Den eksakte verdien kommer til å variere avhengig av hvordan polymeren kveiler seg, ettersom den kan "låse seg fast" i både energirike og energifattige konfigurasjoner.
+Ved høy temperatur vil ikke verdien stabilisere seg på samme måte, men bunnpunktene av grafen går igjen, som tyder på at dette er minimumsenergien
+dersom de tilfeldige fluktueringene ikke hadde oppstått.
