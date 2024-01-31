@@ -82,9 +82,9 @@ def test_valid_rotations():
 def test_metropolis():
 
     # Konstanter
-    N, Ns = 25, 5000
+    N, Ns = 55, 5000
     polymer = create_initial_polymer(N)
-    k = 4e-21 # enhet: [J]
+    k = 4e-21 # enhet: [J/K]
     V = k*matrixV(N)
 
     # Simulering 1
@@ -104,7 +104,7 @@ def test_metropolis():
     plt.legend()
     plt.grid()
     plt.show()
-    
+
     plot(polymer_1, N)
     plot(polymer_2, N)
 
