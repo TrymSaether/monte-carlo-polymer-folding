@@ -1,8 +1,11 @@
 import time
 import numpy as np
-from intact_Nina import surroundings
+from intact_Nina import surroundings_chatgpt
 from main import rotate_test, create_initial_polymer
 from rotate import rotate
+from grafikk import plot
+
+
 def v_Matrix(N):
     grid = np.zeros((N,N), dtype=int, order='F')
     for i in range(N):
@@ -15,10 +18,7 @@ def v_Matrix(N):
                 grid[i + 1, j] = 0
             else:
                 grid[i,j] = -1
-
     return grid
-
-vMatrix = v_Matrix(10)
 
 
 def polEnergy(polymer, vMatrix):
@@ -26,42 +26,33 @@ def polEnergy(polymer, vMatrix):
 
     vectors = np.argwhere(polymer > 0)
     N = len(polymer)
-    b = 0
-    E = np.zeros((N,N), dtype=int, order='F') 
-    
+    E = 0
+
     for monomer in vectors:
-        surroundings_arr = surroundings(polymer, monomer)
+        surroundings_arr = surroundings_chatgpt(polymer, monomer)
         y, x = monomer[0], monomer[1]
         val = polymer[y,x]
-        vals = []
-        vals.append(val)
-        
-        
-        
-        if val == 1:
-            elements = [2]
-        elif val == N:
-            elements = [N-1]
-        else:
-            elements = [val-1, val+1]
 
-        if not all(elem in surroundings_arr for elem in elements): # sjekker naboer
-            b = 0
-        else:
-            b = 1
+        for i in range(N):
+            m = val
+            n = i+1
 
-        for j in range(len(polymer)):
-            E[:,j] = 1/2 * vMatrix[:,j] * b
+            if n in surroundings_arr:
+                print(val, n)
+                b = 1
+                E += 1/2 * vMatrix[m-1,i]
+            else:
+                b = 0
+
+            # E += 1/2 * vMatrix[m-1,i] * b
     
     return E
 
-
-poly0 = create_initial_polymer(10)
-pol, poly0 = rotate(poly0, (5,5), 1)
-pol, poly0 = rotate(poly0, (4,5), 1)
-print(poly0)
-
-
-E = polEnergy(poly0, vMatrix)
- 
+N = 20
+Ns = 100
+polymer, c, t = rotate_test(N, Ns)
+vMatrix = v_Matrix(N)
+print(vMatrix)
+print(polymer)
+E = polEnergy(polymer, vMatrix)
 print(E)
