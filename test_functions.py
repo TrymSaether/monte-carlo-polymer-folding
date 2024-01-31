@@ -108,4 +108,4 @@ def test_metropolis():
     plot(polymer_1, N)
     plot(polymer_2, N)
 
-   
+

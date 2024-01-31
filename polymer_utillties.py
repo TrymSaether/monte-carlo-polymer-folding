@@ -32,6 +32,9 @@ def v_Matrix(N):
     return grid
 """
 
+def rotate_trym(polymer, monomer, angle):
+    polymer['position'][monomer:] = np.dot(polymer['position'][:monomer] - polymer[monomer]['position'], np.array([[np.cos(angle), np.sin(angle)], [-np.sin(angle), np.cos(angle)]])) + polymer[monomer]['position']
+    return polymer
 
 def rotate(polymer, coord, direction):
     rotated_polymer = np.copy(polymer)
