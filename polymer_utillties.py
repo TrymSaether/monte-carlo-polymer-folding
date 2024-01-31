@@ -14,9 +14,8 @@ def create_initial_polymer(N):
 
 
 # ------------- V Matrise --------------
-matrixV = lambda N: np.array(
-    [[-1 if (j < i - 1) or (j > i + 1) else 0 for j in range(N)] for i in range(N)]
-)
+def matrixV(N):
+    return np.array([[-1 if (j < i - 1) or (j > i + 1) else 0 for j in range(N)] for i in range(N)])
 """
 def v_Matrix(N):
     grid = np.zeros((N, N), dtype=int)
@@ -205,9 +204,9 @@ def metropolis(polymer, V, Ns, T):
     """
     beta=1/(k_boltsmann * T)
     N = len(polymer)
-    E_array = np.zeros(Ns, dtype=int)
+    E_array = np.zeros(Ns+1)
     E = polEnergy(polymer, V)
-    i = 1
+    i = 0
     while i < Ns:
         monomer = np.argwhere(polymer > 0)
         coord = monomer[np.random.randint(0, N)]
@@ -216,13 +215,14 @@ def metropolis(polymer, V, Ns, T):
         if is_intact(rot_polymer, N):
             i += 1
             E_new = polEnergy(rot_polymer, V)
+
             if E_new < E:
                 polymer = rot_polymer
                 E = E_new
-            elif np.random.random() < np.exp(-beta * (E_new - E)):
+            elif random.uniform(0, 1) < np.exp(-beta * (E_new - E)):
                 polymer = rot_polymer
                 E = E_new
-            E_array[i - 1] = E
+            E_array[i] = E
     return polymer, E_array
 
 
@@ -243,9 +243,23 @@ def plot(polymer, N):
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_title("Polymer")
-    ax.set_xlim([-nx / 5, nx + nx / 5])
-    ax.set_ylim([-ny / 5, ny + ny / 5])
     ax.grid(True, linewidth=0.2)
+    for i in range(nx):
+        for j in range(ny):
+            c = polymer[i, j]
+            if c != 0:
+                ax.text(
+                    j + 0.5,
+                    i + 0.5,
+                    str(int(c)),
+                    va="center",
+                    ha="center",
+                    fontsize=8,
+                    color="white",
+                )
+    
+
+    
     im = ax.pcolormesh(
         polymer,
         cmap=cmap,

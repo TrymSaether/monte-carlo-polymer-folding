@@ -22,4 +22,4 @@ E = polEnergy(polymer, vMatrix)
 print(E)
 '''
 test_metropolis()
-test_valid_rotations()
+#test_valid_rotations()

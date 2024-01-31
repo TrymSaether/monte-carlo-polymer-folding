@@ -35,29 +35,6 @@ def rotate_test(N, Ns):
     total_time = slutt-start
     return temp_polymer, c, total_time
 
-# -----------s---- OPPGAVE 2b ----------------
-def test_metropolis():
-    # Simulering 1
-    N = 30
-    polymer = create_initial_polymer(N)
-    V = matrixV(N)
-    T = 1
-    beta = 0.5
-    Ns = 40
-    polymer, E_test = metropolis(polymer, V, Ns, T, beta)
-    plot(polymer, N)
-    plt.plot(E_test, 'ro', label=f'Energi - polymer (N = {N})')
-    plt.grid()
-    plt.legend()
-    plt.show()
-    print(E_test)
-    expected_output = np.zeros(Ns, dtype=int)
-    expected_output[0] = polEnergy(polymer, V)
-    # assert np.array_equal(metropolis(polymer, V, Ns, T, beta), expected_output)
-    # assert np.array_equal(metropolis(polymer, V, Ns, T, beta), expected_output)
-    # Add more test cases if needed
-
-
 def test_valid_rotations():
     N = np.arange(10, 200, 50)
     percent_Ns1 = []
@@ -100,3 +77,35 @@ def test_valid_rotations():
     ettersom polymeren fremdeles ikke er så sammenkveilet. Ved liten Ns får disse større vekting i den totale
     sannsynligheten P = G/M, og den totale prosenten blir derfor høyere.
     """
+
+    # -----------s---- OPPGAVE 2b ----------------
+def test_metropolis():
+
+    # Konstanter
+    N, Ns = 25, 5000
+    polymer = create_initial_polymer(N)
+    k = 4e-21 # enhet: [J]
+    V = k*matrixV(N)
+
+    # Simulering 1
+    T_lav = 50
+    polymer_1, E_1 = metropolis(polymer, V, Ns, T_lav)
+
+    # Simulering 2
+    T_hoy = 300 # [K]
+    polymer_2, E_2 = metropolis(polymer, V, Ns, T_hoy)
+
+
+    # Plott
+    plt.plot(E_1, 'b', label=f'E1, (T_lav = {T_lav})')
+    plt.plot(E_2, 'r', label=f'E2 (T_hoy = {T_hoy})')
+    plt.xlabel('t')
+    plt.ylabel('E [J]')
+    plt.legend()
+    plt.grid()
+    plt.show()
+    
+    plot(polymer_1, N)
+    plot(polymer_2, N)
+
+   
