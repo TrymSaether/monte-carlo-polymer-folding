@@ -12,7 +12,10 @@ def create_initial_polymer(N):
 
 
 # ------------- V Matrise --------------
-# Alternativt: V = np.array([[-1 if (j < i - 1) or (j > i + 1) else 0 for j in range(N)] for i in range(N)])
+matrixV = lambda N: np.array(
+    [[-1 if (j < i - 1) or (j > i + 1) else 0 for j in range(N)] for i in range(N)]
+)
+"""
 def v_Matrix(N):
     grid = np.zeros((N, N), dtype=int)
     for i in range(N):
@@ -26,6 +29,7 @@ def v_Matrix(N):
             else:
                 grid[i, j] = -1
     return grid
+"""
 
 
 def rotate(polymer, coord, direction):
@@ -209,7 +213,7 @@ def metropolis(polymer, V, Ns, T, beta=1):
         polymer, rot_polymer = rotate(polymer, coord, dir)
         if is_intact(rot_polymer, N):
             i += 1
-            E_new = polEnergy(polymer, V)
+            E_new = polEnergy(rot_polymer, V)
             if E_new < E:
                 polymer = rot_polymer
                 E = E_new
@@ -217,7 +221,7 @@ def metropolis(polymer, V, Ns, T, beta=1):
                 polymer = rot_polymer
                 E = E_new
             E_array[i - 1] = E
-    return E_array
+    return polymer, E_array
 
 
 # ----------------- Plotting -----------------

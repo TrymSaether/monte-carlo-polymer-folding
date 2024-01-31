@@ -1,6 +1,5 @@
 from polymer_utillties import *
-from test_functions import test_metropolis, rotate_test
-
+from test_functions import test_metropolis, rotate_test, test_valid_rotations
 
 '''
 # ------- TEST: ROTATE_TEST --------
@@ -22,8 +21,5 @@ print(polymer)
 E = polEnergy(polymer, vMatrix)
 print(E)
 '''
-
 test_metropolis()
-'''
-
-'''
+test_valid_rotations()
