@@ -35,9 +35,9 @@ def rotate_test(N, Ns):
     total_time = slutt-start
     return temp_polymer, c, total_time
 
-
+# -----------s---- OPPGAVE 2b ----------------
 def test_metropolis():
-    # Test case 2
+    # Simulering 1
     N = 30
     polymer = create_initial_polymer(N)
     V = matrixV(N)

@@ -4,6 +4,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import colormaps as cm
 
+# Konstanter
+k_boltsmann = 1.38e-23
 
 def create_initial_polymer(N):
     grid = np.zeros((N, N), dtype=int)  # to-dimansjonalt grid uten polymer
@@ -111,7 +113,7 @@ def surroundings(polymer, monomer):  # defines surrounding values
         surroundings[3] = right_val
     except IndexError:
         pass
-    # Jeg synes egentlig den var ganske fin
+    # Jeg synes egentlig den var ganske fin - Trymmelymm
 
     return surroundings
 """
@@ -187,7 +189,7 @@ def polEnergy(polymer, vMatrix):
 
 
 # ----------------- Metropolis algorithms 2 -----------------
-def metropolis(polymer, V, Ns, T, beta=1):
+def metropolis(polymer, V, Ns, T):
     """
     Utfører Metropolis Monte Carlo-simulering for polymerfolding.
 
@@ -201,7 +203,7 @@ def metropolis(polymer, V, Ns, T, beta=1):
     Returns:
         numpy.ndarray: En array med energiverdiene for hvert Monte Carlo-steg.
     """
-
+    beta=1/(k_boltsmann * T)
     N = len(polymer)
     E_array = np.zeros(Ns, dtype=int)
     E = polEnergy(polymer, V)
