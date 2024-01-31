@@ -1,0 +1,6 @@
+
+Ser tydelig forskjell mellom de to grafene. En fellesnevner er at begge polymerer vil strebe etter å minimere egen energi, som kommer tydeligst
+frem i polymeren med lav energi.
+Fysisk sett er sannsynligheten for tilfeldige, ugunstige rotasjoner større ved høyere temperatur.
+I koden simuleres dette ved høy temperatur vil beta = 1/(k_b*T) blir liten, som igjen fører til at exp(-beta*delta_E) blir stor/nærmere 1, relativt til ved lav temperatur.
+Når eksponensialleddet er nærmere 1 vil den tilfeldige p-en vår mest sannsynlig være mindre, og en rotering mot høyere energinivå vil forekomme. 

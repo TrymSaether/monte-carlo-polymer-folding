@@ -34,12 +34,12 @@ def test_valid_rotations():
 
     """
     Ved større N går prosentandelen gyldige rotasjoner ned ved.
-    Når polymeren er stor er det større sannsynlighet for at rotasjonen forrårsaker kollisjon mellom
+    Når polymeren er stor er det større sannsynlighet for at rotasjonen forårsaker kollisjon mellom
     monomerer, ettersom endene blir lange, og det er flere monomerer man kan velge å rotere om.
     Antall mulige rotasjoner går altså opp i takt med N, samtidig som gunstige/gyldige rotasjoner minker.
-    Dette gjenspeiles også i grafen, som harvnokså kraftig fall med økende N for alle Ns.
+    Dette gjenspeiles også i grafen, som har nokså kraftig fall med økende N for alle Ns.
 
-    Grafene viser også at større verdier for forsøkte rotasjoner, Ns, typisk vil resultere i at ferre
+    Grafene viser også at større verdier for forsøkte rotasjoner, Ns, typisk vil resultere i at færre
     rotasjoner faktisk kan gjennomføres. I begynnelsen er det liten sannsynlighet for ugyldige rotasjoner,
     ettersom polymeren fremdeles ikke er så sammenkveilet. Ved liten Ns får disse større vekting i den totale
     sannsynligheten P = G/M, og den totale prosenten blir derfor høyere.
