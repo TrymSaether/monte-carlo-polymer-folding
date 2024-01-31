@@ -3,6 +3,9 @@ import numpy as np
 from intact_Nina import surroundings
 from main import rotate_test, create_initial_polymer
 from rotate import rotate
+from grafikk import plot
+
+
 def v_Matrix(N):
     grid = np.zeros((N,N), dtype=int, order='F')
     for i in range(N):
@@ -55,13 +58,9 @@ def polEnergy(polymer, vMatrix):
     
     return E
 
+N = 20
+polymer, c, t = rotate_test(N, 100)
+vMatrix = v_Matrix(N)
 
-poly0 = create_initial_polymer(10)
-pol, poly0 = rotate(poly0, (5,5), 1)
-pol, poly0 = rotate(poly0, (4,5), 1)
-print(poly0)
-
-
-E = polEnergy(poly0, vMatrix)
- 
+E = polEnergy(polymer, vMatrix)
 print(E)
