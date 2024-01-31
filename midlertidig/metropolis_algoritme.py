@@ -26,7 +26,7 @@ def metropolis(polymer, V, Ns, T, beta = 1):
             elif np.random.random() < np.exp(-beta*(E_new - E)):
                 polymer = rot_polymer
                 E = E_new
-            E_array[i -1] = E
+            E_array[i] = E
     return E_array
 
             
