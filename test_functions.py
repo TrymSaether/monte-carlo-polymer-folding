@@ -105,7 +105,7 @@ def test_metropolis():
     plt.grid()
     plt.show()
 
-    #plot(polymer_1, N)
-    #plot(polymer_2, N)
+    plot(polymer_1, N)
+    plot(polymer_2, N)
 
 
