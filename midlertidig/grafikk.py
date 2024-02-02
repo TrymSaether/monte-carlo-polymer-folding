@@ -19,8 +19,8 @@ def plot(polymer, N):
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_title("Polymer")
-        ax.set_xlim((0, nx + int(nx/3)))
-        ax.set_xlim((0, ny + int(ny/3)))
+        ax.set_xlim([-nx/5, nx + nx/5])
+        ax.set_ylim([-ny/5, ny + ny/5])
         ax.grid(True,linewidth=0.2)
         im = ax.pcolormesh(
             polymer,

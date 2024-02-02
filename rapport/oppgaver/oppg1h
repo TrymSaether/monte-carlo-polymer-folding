@@ -1,0 +1,3 @@
+I rotasjonsfunksjonen tar koden inn en N*N-matrise, omgjør til vektorer, omskriver N*N-marisen til den roterte versjonen, og reeturnerer en ny N*N-matrise.
+Koden kan effektiviseres ved å unngå omveien om N*N-matrisen. Dersom grafikk/plot-funksjonen kan omgjøre vektorene til et pent plot, og dette
+utføres på slutten, etter alle rotasjonene har blitt gjennomført, minker man kjøretiden betraktelig.

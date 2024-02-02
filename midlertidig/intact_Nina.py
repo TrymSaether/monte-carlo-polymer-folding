@@ -8,7 +8,7 @@ def create_initial_polymer(N):
 
 # ikke så nice, men skrevet av meg:
 
-def surroundings(polymer, monomer):  # definerer verdier over, under, til venstre og høyre
+def surroundings(polymer, monomer):  # defines surrounding values
     
     surroundings = np.zeros(4)
 
@@ -71,7 +71,7 @@ def is_intact(polymer, N):
     vectors = np.argwhere(polymer > 0)
     
     for monomer in vectors:
-        surroundings_arr = surroundings(polymer, monomer)
+        surroundings_arr = surroundings_chatgpt(polymer, monomer)
         y, x = monomer[0], monomer[1]
         val = polymer[y,x]
         vals = []
@@ -90,7 +90,7 @@ def is_intact(polymer, N):
         if not all(elem in surroundings_arr for elem in elements): # sjekker naboer
             return False
         
-    if len(vectors) != N: # sjekker antall tall
+    if len(vectors) != N: # checking amount of numbers
         return False
     
         
