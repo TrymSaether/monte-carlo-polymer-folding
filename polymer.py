@@ -22,5 +22,6 @@ print(polymer)
 E = polEnergy(polymer, vMatrix)
 print(E)
 '''
-test_metropolis()
+#test_metropolis()
+rotate_test(10, 5)
 #test_valid_rotations()
