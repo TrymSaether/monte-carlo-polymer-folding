@@ -3,6 +3,8 @@ import numpy as np
 from intact_Nina import surroundings
 from main import rotate_test, create_initial_polymer
 from rotate import rotate
+
+
 def v_Matrix(N):
     grid = np.zeros((N,N), dtype=int, order='F')
     for i in range(N):
@@ -20,7 +22,7 @@ def v_Matrix(N):
 
 vMatrix = v_Matrix(10)
 
-print(vMatrix(10))
+#print(vMatrix(10))
 
 
 def polEnergy(polymer, vMatrix):
