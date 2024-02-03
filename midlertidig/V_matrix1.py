@@ -17,6 +17,7 @@ def v_Matrix(N):
 
 
 
+
 def v_Matrix2(N):
     grid = np.zeros((N,N), dtype=int, order='F')
     for i in range(N):

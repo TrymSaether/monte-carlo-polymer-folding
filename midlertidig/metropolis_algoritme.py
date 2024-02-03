@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from V_matrix import polEnergy
+from midlertidig.V_matrix1 import polEnergy
 from intact_Nina import is_intact
 from rotate import rotate
 
