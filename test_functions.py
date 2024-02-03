@@ -86,7 +86,7 @@ def test_expectedvalue_and_standard_deviation():
 
     plt.title('Forventingsverdi $E$ og standardavvik $\sigma$', fontsize=13)
     plt.plot(T, exp_val, color = 'deepskyblue', label="$E$ ")
-    plt.errorbar(T, std[:34], color = 'steelblue', label="$\sigma_{E}$")
+    plt.errorbar(T, exp_val, yerr= std[:34], color = 'steelblue', label="$\sigma_{E}$")
     plt.xlabel('$T$')
     plt.ylabel('$E og \sigma_E$')
     plt.grid()
