@@ -31,7 +31,7 @@ def v_Matrix2(N):
                 grid[i,j] = i + j
     return grid
 
-print(v_Matrix2(10))
+print(v_Matrix2(20))
 
 
 
