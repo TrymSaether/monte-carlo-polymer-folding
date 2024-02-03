@@ -10,7 +10,7 @@ k_potensiell = 4e-21 # [J]
 
 # Lager ett unike monomer med hvert sitt (x,y) koordinat, som utgjør et polymer med lengde l = N med bindinger
 init_polymer = lambda N: np.array([[i+1, 0] for i in range(N)]) 
-rotate_trym = lambda polymer, xy, state: polymer[xy:]@ np.array([[0, 2*state - 1], [2*state-1, 0]])
+rotate_trym = lambda polymer, xy, state: polymer[polymer > xy]@ np.array([[0, 2*state - 1], [2*state-1, 0]])
 
 
 def create_initial_polymer(N):
