@@ -278,12 +278,6 @@ def plot(polymer, N):
     plt.show()
 
 
-    def create_initial_polymer(N):
-
-    grid = np.zeros((N,N), dtype=int, order='F')        # to-dimansjonalt grid uten polymer
-    grid[int(N/2)] = np.arange(1, N+1)                  # legger inn horisontalt polymer
-    return grid
-
 
 def euclidean_distance(a , b):
 
