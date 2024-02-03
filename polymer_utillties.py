@@ -240,6 +240,19 @@ def metropolis(polymer, V, Ns, T):
             E_array[i] = E
     return polymer, E_array
 
+def expected_value(T):
+    Ns_exclude, Ns = 1000, 3000
+    V = matrixV(N, k = k_boltsmann)
+    EXP = np.array([])
+    STD = np.array([])
+    for t in T:
+        polymer = create_initial_polymer(N)
+        polymer, _, _= rotate_test(N, Ns_exclude)
+        _, E_temp = metropolis(polymer, V, Ns, t)
+        EXP = np.append(EXP, np.mean(E_temp))
+        STD = np.append(EXP, np.std(E_temp))
+    # std_wtf = np.sqrt((T - exp_val)**2)
+    return EXP, STD
 
 # ----------------- Plotting -----------------
 def plot(polymer, N):
