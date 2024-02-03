@@ -50,14 +50,14 @@ def test_valid_rotations():
     sannsynligheten P = G/M, og den totale prosenten blir derfor høyere.
     """
 
-    # -----------s---- OPPGAVE 2b ----------------
+    # ---------------- OPPGAVE 2b ----------------
 def test_metropolis():
 
     # Konstanter
     N, Ns = 25, 5000
     polymer = create_initial_polymer(N)
     k = 4e-21 # enhet: [J/K]
-    V = k*matrixV(N)
+    V = k*v_Matrix2(N)
 
     # Simulering 1
     T_lav = 50 # 50 K < T_lav < 100K
