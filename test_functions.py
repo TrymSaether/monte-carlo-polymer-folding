@@ -1,6 +1,6 @@
 import time
 import random
-from polymer_utillties import create_initial_polymer, matrixV, polymer_energy, rotate, is_intact, metropolis, plot, rotate_test, expected_value
+from polymer_utillties import create_initial_polymer, matrixV, polymer_energy, rotate, is_intact, metropolis, plot, rotate_test, expected_value, v_Matrix2
 import numpy as np
 from matplotlib import pyplot as plt
 
