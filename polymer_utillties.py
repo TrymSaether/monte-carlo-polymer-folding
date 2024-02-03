@@ -5,7 +5,13 @@ from matplotlib import pyplot as plt
 from matplotlib import colormaps as cm
 
 # Konstanter
-k_boltsmann = 1.38e-23
+k_boltsmann = 1.38e-23 # [J/K]
+k_potensiell = 4e-21 # [J]
+
+# Lager ett unike monomer med hvert sitt (x,y) koordinat, som utgjør et polymer med lengde l = N med bindinger
+init_polymer = lambda N: np.array([[i+1, 0] for i in range(N)]) 
+rotate_trym = lambda polymer, xy, state: polymer[xy:]@ np.array([[0, 2*state - 1], [2*state-1, 0]])
+
 
 def create_initial_polymer(N):
     grid = np.zeros((N, N), dtype=int)  # to-dimansjonalt grid uten polymer
@@ -321,7 +327,6 @@ def plot(polymer, N):
 
 
 def euclidean_distance(a , b):
-
     coord_a = np.array(a)
     coord_b = np.array(b)
 
@@ -332,6 +337,8 @@ def euclidean_distance(a , b):
     d = np.sqrt(sum_diff)
 
     return d
+
+
 
 
 
