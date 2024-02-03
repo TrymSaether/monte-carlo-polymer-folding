@@ -22,7 +22,7 @@ print(polymer)
 E = polEnergy(polymer, vMatrix)
 print(E)
 '''
-test_metropolis()
-#test_expectedvalue_and_standard_deviation()
+#test_metropolis()
+test_expectedvalue_and_standard_deviation()
 
 #test_valid_rotations()

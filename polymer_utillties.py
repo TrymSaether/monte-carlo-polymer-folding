@@ -18,7 +18,7 @@ def matrixV(N,k=-1, c=1):
     # N: Størrelse på V
     # k: konstant som fyller V
     # c: Offset fra V_diagonal som fylles med k
-    return np.array([[-k if (j < i - c) or (j > i + c) else 0 for j in range(N)] for i in range(N)])
+    return np.array([[k if (j < i - c) or (j > i + c) else 0 for j in range(N)] for i in range(N)])
 
 def rotate(polymer, coord, direction):
     rotated_polymer = np.copy(polymer)
@@ -242,6 +242,7 @@ def metropolis(polymer, V, Ns, T):
 
 def expected_value(T):
     Ns_exclude, Ns = 1000, 3000
+    N = 30
     V = matrixV(N, k = k_boltsmann)
     EXP = np.array([])
     STD = np.array([])
