@@ -276,3 +276,42 @@ def plot(polymer, N):
     )
     cbar.set_label("monomer")
     plt.show()
+
+
+    def create_initial_polymer(N):
+
+    grid = np.zeros((N,N), dtype=int, order='F')        # to-dimansjonalt grid uten polymer
+    grid[int(N/2)] = np.arange(1, N+1)                  # legger inn horisontalt polymer
+    return grid
+
+
+def euclidean_distance(a , b):
+
+    coord_a = np.array(a)
+    coord_b = np.array(b)
+
+    diff = (coord_a - coord_b)**2   #Square difference
+
+    sum_diff = np.sum(diff)
+
+    d = np.sqrt(sum_diff)
+
+    return d
+
+
+
+def largest_euclidean_distance(polymer):
+
+    distances = []
+    
+    monomer = np.argwhere(polymer > 0)
+    
+    for i in range(len(monomer)):
+        for j in range(len(monomer)):
+            distances.append(euclidean_distance(monomer[i], monomer[j]))
+    
+    sorted_distances = np.sort(distances)
+
+
+    return sorted_distances[-1]
+
