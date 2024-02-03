@@ -5,12 +5,14 @@ from matplotlib import pyplot as plt
 from matplotlib import colormaps as cm
 
 # Konstanter
-k_boltsmann = 1.38e-23 # [J/K]
-k_potensiell = 4e-21 # [J]
+k_boltsmann = 1.38e-23  # [J/K]
+k_potensiell = 4e-21  # [J]
 
 # Lager ett unike monomer med hvert sitt (x,y) koordinat, som utgjør et polymer med lengde l = N med bindinger
-init_polymer = lambda N: np.array([[i+1, 0] for i in range(N)]) 
-rotate_trym = lambda polymer, xy, state: polymer[polymer > xy]@ np.array([[0, 2*state - 1], [2*state-1, 0]])
+init_polymer = lambda N: np.array([[i + 1, 0] for i in range(N)])
+rotate_trym = lambda polymer, xy, state: polymer[polymer > xy] @ np.array(
+    [[0, 2 * state - 1], [2 * state - 1, 0]]
+)
 
 
 def create_initial_polymer(N):
@@ -19,12 +21,24 @@ def create_initial_polymer(N):
     return grid
 
 
+rotateT = lambda polymer, xy, state: np.append(
+    polymer[np.linalg.norm(polymer, axis=1) < np.linalg.norm(xy)],
+    (polymer[np.linalg.norm(polymer, axis=1) >= np.linalg.norm(xy, axis=0)] - xy)
+    @ np.array([[0, 1 - 2 * state], [2 * state - 1, 0]])
+    + xy,
+    axis=0,
+)
+
+
 # ------------- V Matrise --------------
-def matrixV(N,a=-1):
+def matrixV(N, a=-1):
     # N: Størrelse på V
     # k: konstant som fyller V
     # c: Offset fra V_diagonal som fylles med k
-    return np.array([[a if (j < i - 1) or (j > i + 1) else 0 for j in range(N)] for i in range(N)])
+    return np.array(
+        [[a if (j < i - 1) or (j > i + 1) else 0 for j in range(N)] for i in range(N)]
+    )
+
 
 def rotate(polymer, coord, direction):
     rotated_polymer = np.copy(polymer)
@@ -66,6 +80,7 @@ def rotate(polymer, coord, direction):
         rotated_polymer[new_i, new_j] = val
 
     return polymer, rotated_polymer
+
 
 """
 # ----------------- Surroundings (feat. Nina) -----------------
@@ -157,6 +172,30 @@ def is_intact(polymer, N):
 
     return True
 
+
+def rotate_test_trym(N, Ns):
+    c, ti = 0, time.time()
+    polymer = init_polymer(N)
+    for i in range(1, Ns):
+        coord, rot = polymer[np.random.randint(0, N)], random.randint(0, 1)
+        rotated_polymer = rotateT(polymer, coord, rot)
+        print(rotated_polymer)
+        print(intact(rotated_polymer, N))
+        if intact(rotated_polymer, N):
+            polymer = rotated_polymer
+            c += 1
+    t = time.time() - ti
+    return polymer, (c, t)
+
+def intact(polymer, N):
+    if np.count_nonzero(polymer) != N:
+        return False
+    for i in range(N):
+        if i+1 not in polymer:
+            return False
+    else:
+        return True
+
 def rotate_test(N, Ns):
     """
     Utfører en Monte Carlo-simulering av polymerfolding ved å rotere polymeren.
@@ -176,16 +215,17 @@ def rotate_test(N, Ns):
         monomer = np.argwhere(temp_polymer > 0)
         coord = monomer[np.random.randint(0, N)]
         rot = random.randint(0, 1)
-        old_polymer, rot_polymer = rotate(temp_polymer,coord,rot)
-        
+        old_polymer, rot_polymer = rotate(temp_polymer, coord, rot)
+
         if is_intact(rot_polymer, N):
             c += 1
             temp_polymer = rot_polymer
         else:
             temp_polymer = old_polymer
     slutt = time.time()
-    total_time = slutt-start
+    total_time = slutt - start
     return temp_polymer, c, total_time
+
 
 # ----------------- Metropolis algorithms 1 -----------------
 def polymer_energy(polymer, vMatrix):
@@ -223,9 +263,9 @@ def metropolis(polymer, V, Ns, T):
     Returns:
         numpy.ndarray: En array med energiverdiene for hvert Monte Carlo-steg.
     """
-    beta=1/(k_boltsmann * T)
+    beta = 1 / (k_boltsmann * T)
     N = len(polymer)
-    E_array = np.zeros(Ns+1)
+    E_array = np.zeros(Ns + 1)
     E = polymer_energy(polymer, V)
     i = 0
     while i < Ns:
@@ -246,35 +286,44 @@ def metropolis(polymer, V, Ns, T):
             E_array[i] = E
     return polymer, E_array
 
+
 def v_Matrix2(N):
-    grid = np.zeros((N,N), dtype=int, order='F')
+    grid = np.zeros((N, N), dtype=int, order="F")
     for i in range(N):
         for j in range(N):
-            if i == j:    
-                 grid[i,j] = 0
+            if i == j:
+                grid[i, j] = 0
             elif i == j + 1:
-                grid[i,j+1] = 0
+                grid[i, j + 1] = 0
             elif i + 1 == j:
                 grid[i + 1, j] = 0
             else:
-                grid[i,j] = -(i + j)
+                grid[i, j] = -(i + j)
     return grid
 
 
 def expected_value(T):
-    Ns_exclude, Ns = 1000, 10000 # Ns_exclude: eksluder 1000 første MC-steg. # Ns: antall totale MC-steg, så kun regne forventningsverdi og standardavvik for polymer mellom 1000-5000
-    N = 30 # Størrelse på polymer
-    a = -4e-21 # Pot. energikonstant
-    V = matrixV(N, a) # a * V matrise
-    EXP = np.array([]) # Array som lagrer alle forventningsverdiene <E>
-    STD = np.array([]) # og standardavvik sigma_e array
-    for t in T: # Itererer gjennom temperatur T array [T_slutt->T_slutt, steglengde]
+    Ns_exclude, Ns = (
+        1000,
+        10000,
+    )  # Ns_exclude: eksluder 1000 første MC-steg. # Ns: antall totale MC-steg, så kun regne forventningsverdi og standardavvik for polymer mellom 1000-5000
+    N = 30  # Størrelse på polymer
+    a = -4e-21  # Pot. energikonstant
+    V = matrixV(N, a)  # a * V matrise
+    EXP = np.array([])  # Array som lagrer alle forventningsverdiene <E>
+    STD = np.array([])  # og standardavvik sigma_e array
+    for t in T:  # Itererer gjennom temperatur T array [T_slutt->T_slutt, steglengde]
         polymer = create_initial_polymer(N)
-        polymer, _, _= rotate_test(N, Ns_exclude) # returnerer polymer etter 1000 MC-steg / rotasjoner
-        _, E_temp = metropolis(polymer, V, Ns, t) # Energi til polymer med 1000-> Ns steg
+        polymer, _, _ = rotate_test(
+            N, Ns_exclude
+        )  # returnerer polymer etter 1000 MC-steg / rotasjoner
+        _, E_temp = metropolis(
+            polymer, V, Ns, t
+        )  # Energi til polymer med 1000-> Ns steg
         EXP = np.append(EXP, np.mean(E_temp))
         STD = np.append(STD, np.std(E_temp))
     return EXP, STD
+
 
 # ----------------- Plotting -----------------
 def plot(polymer, N):
@@ -307,9 +356,7 @@ def plot(polymer, N):
                     fontsize=8,
                     color="white",
                 )
-    
 
-    
     im = ax.pcolormesh(
         polymer,
         cmap=cmap,
@@ -325,12 +372,11 @@ def plot(polymer, N):
     plt.show()
 
 
-
-def euclidean_distance(a , b):
+def euclidean_distance(a, b):
     coord_a = np.array(a)
     coord_b = np.array(b)
 
-    diff = (coord_a - coord_b)**2   #Square difference
+    diff = (coord_a - coord_b) ** 2  # Square difference
 
     sum_diff = np.sum(diff)
 
@@ -339,21 +385,16 @@ def euclidean_distance(a , b):
     return d
 
 
-
-
-
 def largest_euclidean_distance(polymer):
 
     distances = []
-    
+
     monomer = np.argwhere(polymer > 0)
-    
+
     for i in range(len(monomer)):
         for j in range(len(monomer)):
             distances.append(euclidean_distance(monomer[i], monomer[j]))
-    
+
     sorted_distances = np.sort(distances)
 
-
     return sorted_distances[-1]
-

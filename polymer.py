@@ -23,6 +23,10 @@ E = polEnergy(polymer, vMatrix)
 print(E)
 '''
 #test_metropolis()
-test_expectedvalue_and_standard_deviation()
+#test_expectedvalue_and_standard_deviation()
+
+p0, (c, t) = rotate_test_trym(25, 10)
+print(p0)
+plt.show()
 
 #test_valid_rotations()
