@@ -1,39 +1,11 @@
 import time
 import random
-from polymer_utillties import create_initial_polymer, matrixV, polEnergy, rotate, is_intact, metropolis, plot
+from polymer_utillties import create_initial_polymer, matrixV, polymer_energy, rotate, is_intact, metropolis, plot, rotate_test, expected_value
 import numpy as np
 from matplotlib import pyplot as plt
 
 
-def rotate_test(N, Ns):
-    """
-    Utfører en Monte Carlo-simulering av polymerfolding ved å rotere polymeren.
 
-    Parametere:
-    N (int): Antall monomerer i polymeren.
-    Ns (int): Antall Monte Carlo-steg som skal utføres.
-
-    Returnerer:
-    tuple: En tuple bestående av den resulterende polymeren, antall vellykkede rotasjoner og total tid brukt.
-
-    """
-    start = time.time()
-    c = 1
-    temp_polymer = create_initial_polymer(N)
-    for i in range(1, Ns):
-        monomer = np.argwhere(temp_polymer > 0)
-        coord = monomer[np.random.randint(0, N)]
-        rot = random.randint(0, 1)
-        old_polymer, rot_polymer = rotate(temp_polymer,coord,rot)
-        
-        if is_intact(rot_polymer, N):
-            c += 1
-            temp_polymer = rot_polymer
-        else:
-            temp_polymer = old_polymer
-    slutt = time.time()
-    total_time = slutt-start
-    return temp_polymer, c, total_time
 
 def test_valid_rotations():
     N = np.arange(10, 200, 50)
@@ -108,4 +80,15 @@ def test_metropolis():
     plot(polymer_1, N)
     plot(polymer_2, N)
 
+def test_expectedvalue_and_standard_deviation():
+    T = np.arange(10, 1001, 30)
+    exp_val, std = expected_value(T)
 
+    plt.title('Forventingsverdi $E$ og standardavvik $\sigma$', fontsize=13)
+    plt.plot(T, exp_val, color = 'deepskyblue', label="$E$ ")
+    plt.errorbar(T, std[:34], color = 'steelblue', label="$\sigma_{E}$")
+    plt.xlabel('$T$')
+    plt.ylabel('$E og \sigma_E$')
+    plt.grid()
+    plt.legend()
+    plt.show()

@@ -1,5 +1,5 @@
 from polymer_utillties import *
-from test_functions import test_metropolis, rotate_test, test_valid_rotations
+from test_functions import test_metropolis, rotate_test, test_valid_rotations, test_expectedvalue_and_standard_deviation
 
 
 '''
@@ -23,5 +23,6 @@ E = polEnergy(polymer, vMatrix)
 print(E)
 '''
 test_metropolis()
+#test_expectedvalue_and_standard_deviation()
 
 #test_valid_rotations()

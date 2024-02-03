@@ -14,27 +14,11 @@ def create_initial_polymer(N):
 
 
 # ------------- V Matrise --------------
-def matrixV(N):
-    return np.array([[-1 if (j < i - 1) or (j > i + 1) else 0 for j in range(N)] for i in range(N)])
-"""
-def v_Matrix(N):
-    grid = np.zeros((N, N), dtype=int)
-    for i in range(N):
-        for j in range(N):
-            if i == j:
-                grid[i, j] = 0
-            elif i == j + 1:
-                grid[i, j + 1] = 0
-            elif i + 1 == j:
-                grid[i + 1, j] = 0
-            else:
-                grid[i, j] = -1
-    return grid
-"""
-
-def rotate_trym(polymer, monomer, angle):
-    polymer['position'][monomer:] = np.dot(polymer['position'][:monomer] - polymer[monomer]['position'], np.array([[np.cos(angle), np.sin(angle)], [-np.sin(angle), np.cos(angle)]])) + polymer[monomer]['position']
-    return polymer
+def matrixV(N,k=-1, c=1):
+    # N: Størrelse på V
+    # k: konstant som fyller V
+    # c: Offset fra V_diagonal som fylles med k
+    return np.array([[-k if (j < i - c) or (j > i + c) else 0 for j in range(N)] for i in range(N)])
 
 def rotate(polymer, coord, direction):
     rotated_polymer = np.copy(polymer)
@@ -76,7 +60,6 @@ def rotate(polymer, coord, direction):
         rotated_polymer[new_i, new_j] = val
 
     return polymer, rotated_polymer
-
 
 """
 # ----------------- Surroundings (feat. Nina) -----------------
@@ -168,9 +151,38 @@ def is_intact(polymer, N):
 
     return True
 
+def rotate_test(N, Ns):
+    """
+    Utfører en Monte Carlo-simulering av polymerfolding ved å rotere polymeren.
+
+    Parametere:
+    N (int): Antall monomerer i polymeren.
+    Ns (int): Antall Monte Carlo-steg som skal utføres.
+
+    Returnerer:
+    tuple: En tuple bestående av den resulterende polymeren, antall vellykkede rotasjoner og total tid brukt.
+
+    """
+    start = time.time()
+    c = 1
+    temp_polymer = create_initial_polymer(N)
+    for i in range(1, Ns):
+        monomer = np.argwhere(temp_polymer > 0)
+        coord = monomer[np.random.randint(0, N)]
+        rot = random.randint(0, 1)
+        old_polymer, rot_polymer = rotate(temp_polymer,coord,rot)
+        
+        if is_intact(rot_polymer, N):
+            c += 1
+            temp_polymer = rot_polymer
+        else:
+            temp_polymer = old_polymer
+    slutt = time.time()
+    total_time = slutt-start
+    return temp_polymer, c, total_time
 
 # ----------------- Metropolis algorithms 1 -----------------
-def polEnergy(polymer, vMatrix):
+def polymer_energy(polymer, vMatrix):
     vectors = np.argwhere(polymer > 0)
     N = len(polymer)
     E = 0
@@ -208,7 +220,7 @@ def metropolis(polymer, V, Ns, T):
     beta=1/(k_boltsmann * T)
     N = len(polymer)
     E_array = np.zeros(Ns+1)
-    E = polEnergy(polymer, V)
+    E = polymer_energy(polymer, V)
     i = 0
     while i < Ns:
         monomer = np.argwhere(polymer > 0)
@@ -217,12 +229,12 @@ def metropolis(polymer, V, Ns, T):
         polymer, rot_polymer = rotate(polymer, coord, dir)
         if is_intact(rot_polymer, N):
             i += 1
-            E_new = polEnergy(rot_polymer, V)
+            E_new = polymer_energy(rot_polymer, V)
 
             if E_new < E:
                 polymer = rot_polymer
                 E = E_new
-            elif random.uniform(0, 1) < np.exp(-beta * (E_new - E)):
+            elif np.random.random() < np.exp(-beta * (E_new - E)):
                 polymer = rot_polymer
                 E = E_new
             E_array[i] = E
