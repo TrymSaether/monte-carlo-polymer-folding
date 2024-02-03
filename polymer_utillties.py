@@ -256,7 +256,7 @@ def v_Matrix2(N):
 
 
 def expected_value(T):
-    Ns_exclude, Ns = 1000, 6000 # Ns_exclude: eksluder 1000 første MC-steg. # Ns: antall totale MC-steg, så kun regne forventningsverdi og standardavvik for polymer mellom 1000-5000
+    Ns_exclude, Ns = 1000, 10000 # Ns_exclude: eksluder 1000 første MC-steg. # Ns: antall totale MC-steg, så kun regne forventningsverdi og standardavvik for polymer mellom 1000-5000
     N = 30 # Størrelse på polymer
     a = -4e-21 # Pot. energikonstant
     V = matrixV(N, a) # a * V matrise
@@ -264,11 +264,10 @@ def expected_value(T):
     STD = np.array([]) # og standardavvik sigma_e array
     for t in T: # Itererer gjennom temperatur T array [T_slutt->T_slutt, steglengde]
         polymer = create_initial_polymer(N)
-        polymer, _, _= rotate_test(N, Ns_exclude)
-        _, E_temp = metropolis(polymer, V, Ns, t)
+        polymer, _, _= rotate_test(N, Ns_exclude) # returnerer polymer etter 1000 MC-steg / rotasjoner
+        _, E_temp = metropolis(polymer, V, Ns, t) # Energi til polymer med 1000-> Ns steg
         EXP = np.append(EXP, np.mean(E_temp))
         STD = np.append(STD, np.std(E_temp))
-    # std_wtf = np.sqrt((T - exp_val)**2)
     return EXP, STD
 
 # ----------------- Plotting -----------------
