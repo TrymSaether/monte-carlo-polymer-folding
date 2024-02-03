@@ -240,6 +240,21 @@ def metropolis(polymer, V, Ns, T):
             E_array[i] = E
     return polymer, E_array
 
+def v_Matrix2(N):
+    grid = np.zeros((N,N), dtype=int, order='F')
+    for i in range(N):
+        for j in range(N):
+            if i == j:    
+                 grid[i,j] = 0
+            elif i == j + 1:
+                grid[i,j+1] = 0
+            elif i + 1 == j:
+                grid[i + 1, j] = 0
+            else:
+                grid[i,j] = -(i + j)
+    return grid
+
+
 def expected_value(T):
     Ns_exclude, Ns = 1000, 3000
     N = 30
