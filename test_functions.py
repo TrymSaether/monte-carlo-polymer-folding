@@ -67,18 +67,16 @@ def test_metropolis(c = 1):
     T_hoy = 300 # [K] - 293 K < T_hoy < 373 K
     polymer_2, E_2 = metropolis(polymer, V, Ns, T_hoy)
 
-    fig, (ax_e1, ax_e2) = plt.subplots(1, 2,figsize = (18, 9))
+    #fig, (ax_e1, ax_e2) = plt.subplots(1, 2,figsize = (18, 9))
     # Plott
-    ax_e1.plot(E_1, 'b', label=f'E1, (T_lav = {T_lav})')
-    ax_e2.plot(E_2, 'r', label=f'E2 (T_hoy = {T_hoy})')
+    #ax_e1.plot(E_1, 'b', label=f'E1, (T_lav = {T_lav})')
+    #ax_e2.plot(E_2, 'r', label=f'E2 (T_hoy = {T_hoy})')
     #plt.xlabel('t')
     #plt.ylabel('E [J]')
     #plt.legend()
     #plt.grid()
     #plt.show()
-
-    plot(polymer_1, N)
-    plot(polymer_2, N)
+    return polymer_1, polymer_2, E_1, E_2
 
 def test_expectedvalue_and_standard_deviation():
     T = np.arange(10, 1001, 30)

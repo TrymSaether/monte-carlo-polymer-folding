@@ -324,21 +324,21 @@ def expected_value(T):
         STD = np.append(STD, np.std(E_temp))
     return EXP, STD
 
-
+fig = plt.figure()
+ax = fig.add_subplot(111)
 # ----------------- Plotting -----------------
-def plot(polymer, N):
-    """
-    Plot the image.
-    """
+def plot(polymer,N, fig, ax):
+
+    # now later you get a new subplot; change the geometry of the existing
     polymer = polymer[~np.all(polymer == 0, axis=1)]
     polymer = polymer[:, ~np.all(polymer == 0, axis=0)]
     nx, ny = np.shape(polymer)
     polymer = np.ma.masked_where(polymer == 0, polymer)
     cmap = cm.get_cmap("plasma").copy()
     cmap.set_bad(color="white")
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
+    
+    # add dynamically new sublots
+    
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_title("Polymer")
