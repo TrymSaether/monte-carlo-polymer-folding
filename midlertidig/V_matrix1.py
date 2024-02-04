@@ -17,6 +17,7 @@ def v_Matrix(N):
 
 
 
+
 def v_Matrix2(N):
     grid = np.zeros((N,N), dtype=int, order='F')
     for i in range(N):
@@ -28,10 +29,9 @@ def v_Matrix2(N):
             elif i + 1 == j:
                 grid[i + 1, j] = 0
             else:
-                grid[i,j] = -i - j
+                grid[i,j] = -(i + j)
     return grid
 
-print(v_Matrix2(15))
 
 
 
