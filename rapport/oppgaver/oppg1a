@@ -1,4 +1,0 @@
-Oppgave 1a)
-
-For å lage en monomer har vi tatt utgangspunkt i en N*N-matrise med nummererte monomerer fra 1 til N. Dette er hovedsakelig for å enkelt illustrere polymeren.
-For å minimere antall iterasjoner når polymeren skal manipuleres, og dermed kjøretiden til programmet, har vi brukt np.argwhere()-funksjonen. Funksjonen returnerer et to-dimasjonalt array med posisjonen til alle ikke-null elementer i matrisen. Samlingen av koordinater kan dermed anses som vektorer, som er enklere å jobbe med for både oss og kompilatoren. 

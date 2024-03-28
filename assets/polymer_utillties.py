@@ -3,6 +3,7 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import colormaps as cm
+from scipy.spatial import distance
 
 # Konstanter
 k_boltsmann = 1.38e-23  # [J/K]
@@ -228,22 +229,19 @@ def rotate_test(N, Ns):
 
 
 # ----------------- Metropolis algorithms 1 -----------------
-def polymer_energy(polymer, vMatrix):
-    vectors = np.argwhere(polymer > 0)
+def polymer_energy(polymer, V):
     N = len(polymer)
     E = 0
-    for monomer in vectors:
+    for m in polymer:
+        # m: monomer ned koordinat (x,y)
         surroundings_arr = surroundings_chatgpt(polymer, monomer)
-        y, x = monomer[0], monomer[1]
+        y, x = m[0], m[1]
         val = polymer[y, x]
         for i in range(N):
             m = val
             n = i + 1
             if n in surroundings_arr:
-                b = 1
-                E += 1 / 2 * vMatrix[m - 1, i]
-            else:
-                b = 0
+                E += 1 / 2 * V[m - 1, i]
             # E += 1/2 * vMatrix[m-1,i] * b
     return E
 
@@ -258,33 +256,29 @@ def metropolis(polymer, V, Ns, T):
         V (numpy.ndarray): En array som representerer potensialet.
         Ns (int): Antall Monte Carlo-steg som skal utføres.
         T (float): Temperaturen i systemet.
-        beta (float, optional): Invers temperatur. Standardverdi er 1.
+        beta (float, optional): Invers temperatur*boltzmann konstant
 
     Returns:
         numpy.ndarray: En array med energiverdiene for hvert Monte Carlo-steg.
     """
-    beta = 1 / (k_boltsmann * T)
-    N = len(polymer)
-    E_array = np.zeros(Ns + 1)
-    E = polymer_energy(polymer, V)
-    i = 0
+    beta = 1 / (k_boltsmann * T) # Termodynamisk beta 
+    N = len(polymer) # Størrelse på polymer
+    E, D = np.zeros(Ns + 1), np.zeros(Ns + 1) # Energi- og Distanse-Array
+    e, d = 0, 0# Initaliser e: energi,  d: distanse og
+    i = 0  # i: teller
     while i < Ns:
-        monomer = np.argwhere(polymer > 0)
-        coord = monomer[np.random.randint(0, N)]
-        dir = random.randint(0, 1)
-        polymer, rot_polymer = rotate(polymer, coord, dir)
-        if is_intact(rot_polymer, N):
+        e = polymer_energy(polymer, V) 
+        xy, state = polymer[np.random.randint(1, N-1)], random.randint(0, 1)
+        polymer_temp = rotate(polymer, xy, state)
+        if is_intact(polymer_temp, N):
+            E_new = polymer_energy(polymer_temp, V)
+            if (E_new < e) or (np.random.random() < np.exp(-beta * (E_new - e))):
+                polymer = polymer_temp
+                d = np.max(distance.cdist(polymer,polymer,'euclidean'))
+                e = E_new
+            E[i], D[i] = e, d
             i += 1
-            E_new = polymer_energy(rot_polymer, V)
-
-            if E_new < E:
-                polymer = rot_polymer
-                E = E_new
-            elif np.random.random() < np.exp(-beta * (E_new - E)):
-                polymer = rot_polymer
-                E = E_new
-            E_array[i] = E
-    return polymer, E_array
+    return polymer, E
 
 
 def v_Matrix2(N):
@@ -327,7 +321,7 @@ def expected_value(T):
 fig = plt.figure()
 ax = fig.add_subplot(111)
 # ----------------- Plotting -----------------
-def plot(polymer,N, fig, ax):
+def plot(polymer,N):
 
     # now later you get a new subplot; change the geometry of the existing
     polymer = polymer[~np.all(polymer == 0, axis=1)]
@@ -372,29 +366,40 @@ def plot(polymer,N, fig, ax):
     plt.show()
 
 
-def euclidean_distance(a, b):
-    coord_a = np.array(a)
-    coord_b = np.array(b)
-
-    diff = (coord_a - coord_b) ** 2  # Square difference
-
-    sum_diff = np.sum(diff)
-
-    d = np.sqrt(sum_diff)
-
-    return d
-
-
-def largest_euclidean_distance(polymer):
-
-    distances = []
-
-    monomer = np.argwhere(polymer > 0)
-
-    for i in range(len(monomer)):
-        for j in range(len(monomer)):
-            distances.append(euclidean_distance(monomer[i], monomer[j]))
-
-    sorted_distances = np.sort(distances)
-
-    return sorted_distances[-1]
+def plot(polymer):
+    nx, ny = np.shape(polymer)
+    X, Y = np.meshgrid(np.arange(0, nx), np.arange(0, ny))
+    fig, ax = plt.subplots()
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_title("Polymer")
+    ax.grid(True, linewidth=0.2)
+    for i in range(nx):
+        for j in range(ny):
+            c = polymer[i, j]
+            if c != 0:
+                ax.text(
+                    j + 0.5,
+                    i + 0.5,
+                    str(int(c)),
+                    va="center",
+                    ha="center",
+                    fontsize=8,
+                    color="white",
+                )
+    im = ax.pcolormesh(
+        X,
+        Y,
+        polymer,
+        cmap="plasma",
+        linewidth=0.5,
+        antialiased=True,
+    )
+    cbar = fig.colorbar(
+        im,
+        ticks=np.arange(1, 21, 2),
+        boundaries=np.arange(1, 21, 1),
+    )
+    cbar.set_label("monomer")
+    plt.show()
+    
